@@ -129,9 +129,9 @@ for conf in /config/*; do
 done
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Setup bun
-mkdir -p "/app" && cd "/app" || exit 10
+mkdir -p "/data" && cd "/data" || exit 10
 if [ -z "$1" ] && [ -z "$(ls -A "/app"/* 2>/dev/null)" ]; then
-  mkdir -p "/app" && cd "/app"
+  mkdir -p "/data" && cd "/data"
   bun upgrade && bun init
 fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
