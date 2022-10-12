@@ -118,16 +118,6 @@ if [ ! -e "/config/$APPNAME" ] && [ -e "$DEFAULT_CONF_DIR/$APPNAME" ]; then
   cp -Rf "$DEFAULT_CONF_DIR/$APPNAME" "/config/$APPNAME"
 fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Create config symlinks
-for conf in /config/*; do
-  if [ -e "/etc/$conf" ]; then
-    if [ ! -d "/config/bin" ]; then
-      rm -Rf "/etc/${conf:?}"
-      ln -sf "/config/$conf" "/etc/$conf"
-    fi
-  fi
-done
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Setup bun
 mkdir -p "/data" && cd "/data" || exit 10
 if [ -z "$1" ] && [ -z "$(ls -A "/app"/* 2>/dev/null)" ]; then
