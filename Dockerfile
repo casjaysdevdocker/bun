@@ -5,7 +5,7 @@ ARG alpine_version="v3.16"
 ARG TIMEZONE="America/New_York" \
   IMAGE_NAME="bun" \
   LICENSE="MIT" \
-  PORTS=""
+  PORTS="1-65535"
 
 ENV TZ="$TIMEZONE" \
   SHELL="/bin/bash" \
@@ -56,7 +56,7 @@ ENV SHELL="/bin/bash" \
   TZ="${TZ:-America/New_York}" \
   TIMEZONE="$$TIMEZONE" \
   PHP_SERVER="none" \
-  PORT=""
+  PORT="5000"
 
 COPY --from=build /. /
 
