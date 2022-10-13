@@ -20,7 +20,7 @@ RUN set -ex; \
   apt-get update && apt-get upgrade -yy && apt-get install -yy \
   unzip && \
   curl -q -fsSL https://bun.sh/install | bash && \
-  ln -sf /usr/local/share/bun/bun /usr/local/bin && \
+  ln -sf /usr/local/share/bun/bin/bun /usr/local/bin && \
   git clone "https://github.com/casjay-templates/bunjs" "/usr/local/share/template-files/data/htdocs/www/" && \
   cd "/usr/local/share/template-files/data/htdocs/www" && \
   /usr/local/bin/bun install
