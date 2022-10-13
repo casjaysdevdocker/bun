@@ -1,25 +1,22 @@
-FROM casjaysdevdocker/alpine:latest AS build
-
-ARG alpine_version="v3.16"
+FROM casjaysdevdocker/debian:latest as build
 
 ARG TIMEZONE="America/New_York" \
   IMAGE_NAME="bun" \
   LICENSE="MIT" \
+  DEBUG="" \ 
   PORTS="1-65535"
 
 ENV TZ="$TIMEZONE" \
+  DEBUG="$DEBUG" \
   SHELL="/bin/bash" \
+  ENV="$HOME/.bashrc" \
   TERM="xterm-256color" \
   HOSTNAME="${HOSTNAME:-casjaysdev-$IMAGE_NAME}" \
-  BUN_INSTALL="/usr/local/share/bun"
 
 RUN set -ex; \
   mkdir -p "/usr/local/share/template-files/data/htdocs/www" && \
-  rm -Rf "/etc/apk/repositories"; \
-  echo "http://dl-cdn.alpinelinux.org/alpine/$alpine_version/main" >> "/etc/apk/repositories"; \
-  echo "http://dl-cdn.alpinelinux.org/alpine/$alpine_version/community" >> "/etc/apk/repositories"; \
-  if [ "$alpine_version" = "edge" ]; then echo "http://dl-cdn.alpinelinux.org/alpine/$alpine_version/testing" >> "/etc/apk/repositories" ; fi ; \
-  apk update --update-cache && \
+  apt-get update && apt-get upgrade -yy && apt-get install -yy \
+  unzip && \
   curl -fsSL https://bun.sh/install | bash && \
   ln -sf /usr/local/share/bun/bun /usr/local/bin && \
   git clone -q "https://github.com/casjay-templates/bunjs" "/usr/local/share/template-files/data/htdocs/www"
@@ -28,37 +25,34 @@ COPY ./bin/. /usr/local/bin/
 COPY ./data/. /usr/local/share/template-files/data/
 COPY ./config/. /usr/local/share/template-files/config/
 
-RUN rm -Rf /bin/.gitkeep /config /data /var/cache/apk/* /usr/local/share/template-files/data/htdocs/www/.git
+RUN  && \
+  rm -Rf /tmp/* /bin/.gitkeep /config /data /var/lib/apt/lists/* /usr/local/share/template-files/data/htdocs/www/.git
 
 FROM scratch
-ARG BUILD_DATE="2022-10-12" \
-  BUILD_VERSION="latest" \
-  BUN_INSTALL="/usr/local/share/bun"
 
-LABEL maintainer="CasjaysDev <docker-admin@casjaysdev.com>" \
-  org.opencontainers.image.vcs-type="Git" \
-  org.opencontainers.image.name="bun" \
-  org.opencontainers.image.base.name="bun" \
-  org.opencontainers.image.license="$LICENSE" \
-  org.opencontainers.image.vcs-ref="$BUILD_VERSION" \
-  org.opencontainers.image.build-date="$BUILD_DATE" \
-  org.opencontainers.image.version="$BUILD_VERSION" \
-  org.opencontainers.image.schema-version="$BUILD_VERSION" \
-  org.opencontainers.image.url="https://hub.docker.com/r/casjaysdevdocker/bun" \
-  org.opencontainers.image.vcs-url="https://github.com/casjaysdevdocker/bun" \
-  org.opencontainers.image.url.source="https://github.com/casjaysdevdocker/bun" \
-  org.opencontainers.image.documentation="https://hub.docker.com/r/casjaysdevdocker/bun" \
-  org.opencontainers.image.vendor="CasjaysDev" \
-  org.opencontainers.image.authors="CasjaysDev" \
-  org.opencontainers.image.description="Containerized version of bun"
+ARG BUILD_DATE="$(date +'%Y-%m-%d %H:%M')"
+
+LABEL org.label-schema.name="bun" \
+  org.label-schema.description="containerized version of bun" \
+  org.label-schema.url="https://github.com/casjaysdevdocker/bun/bun" \
+  org.label-schema.vcs-url="https://github.com/casjaysdevdocker/bun/bun" \
+  org.label-schema.build-date=$BUILD_DATE \
+  org.label-schema.version=$BUILD_DATE \
+  org.label-schema.vcs-ref=$BUILD_DATE \
+  org.label-schema.license="WTFPL" \
+  org.label-schema.vcs-type="Git" \
+  org.label-schema.schema-version="latest" \
+  org.label-schema.vendor="CasjaysDev" \
+  maintainer="CasjaysDev <docker-admin@casjaysdev.com>"
 
 ENV SHELL="/bin/bash" \
+  ENV="$HOME/.bashrc" \
   TERM="xterm-256color" \
-  HOSTNAME="casjaysdev-bun" \
+  HOSTNAME="casjaysdev-alpine" \
   TZ="${TZ:-America/New_York}" \
-  TIMEZONE="$$TIMEZONE" \
+  TIMEZONE="$TIMEZONE" \
   PHP_SERVER="none" \
-  PORT="5000"
+  PORT=""
 
 COPY --from=build /. /
 
