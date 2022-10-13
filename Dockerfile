@@ -14,19 +14,21 @@ ENV TZ="$TIMEZONE" \
   BUN_INSTALL="/usr/local/share/bun"
 
 RUN set -ex; \
+  mkdir -p "/usr/local/share/template-files/data/htdocs/www" && \
   rm -Rf "/etc/apk/repositories"; \
   echo "http://dl-cdn.alpinelinux.org/alpine/$alpine_version/main" >> "/etc/apk/repositories"; \
   echo "http://dl-cdn.alpinelinux.org/alpine/$alpine_version/community" >> "/etc/apk/repositories"; \
   if [ "$alpine_version" = "edge" ]; then echo "http://dl-cdn.alpinelinux.org/alpine/$alpine_version/testing" >> "/etc/apk/repositories" ; fi ; \
   apk update --update-cache && \
   curl -fsSL https://bun.sh/install | bash && \
-  ln -sf /usr/local/share/bun/bun /usr/local/bin
+  ln -sf /usr/local/share/bun/bun /usr/local/bin && \
+  git clone -q "https://github.com/casjay-templates/bunjs" "/usr/local/share/template-files/data/htdocs/www"
 
 COPY ./bin/. /usr/local/bin/
 COPY ./data/. /usr/local/share/template-files/data/
 COPY ./config/. /usr/local/share/template-files/config/
 
-RUN rm -Rf /bin/.gitkeep /config /data /var/cache/apk/*
+RUN rm -Rf /bin/.gitkeep /config /data /var/cache/apk/* /usr/local/share/template-files/data/htdocs/www/.git
 
 FROM scratch
 ARG BUILD_DATE="2022-10-12" \
@@ -60,7 +62,7 @@ ENV SHELL="/bin/bash" \
 
 COPY --from=build /. /
 
-WORKDIR /data
+WORKDIR /data/htdocs/www
 
 VOLUME [ "/config","/data" ]
 
@@ -69,4 +71,3 @@ EXPOSE $PORTS
 ENTRYPOINT [ "tini", "-p", "SIGTERM", "--" ]
 CMD [ "/usr/local/bin/entrypoint-bun.sh" ]
 HEALTHCHECK --start-period=1m --interval=2m --timeout=3s CMD [ "/usr/local/bin/entrypoint-bun.sh", "healthcheck" ]
-

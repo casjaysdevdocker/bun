@@ -119,10 +119,10 @@ if [ ! -e "/config/$APPNAME" ] && [ -e "$DEFAULT_CONF_DIR/$APPNAME" ]; then
 fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Setup bun
-mkdir -p "/data" && cd "/data" || exit 10
-if [ -z "$1" ] && [ -z "$(ls -A "/app"/* 2>/dev/null)" ]; then
-  mkdir -p "/data" && cd "/data"
-  bun upgrade && bun init
+mkdir -p "/data/htdocs/www" && cd "/data/htdocs/www" || exit 10
+if [ -z "$1" ] && [ -z "$(ls -A "/data/htdocs/www"/* 2>/dev/null)" ]; then
+  cp -Rf "/usr/local/share/template-files/data/htdocs/www/." "/data/htdocs/www/"
+  RUN_SCRIPT="src/index.ts"
 fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Additional commands
@@ -155,7 +155,11 @@ bun)
 
 *) # Execute primary command
   if [ $# -eq 0 ]; then
-    if [ -f "index.ts" ]; then
+    if [ -n "$RUN_SCRIPT" ]; then
+      START_SCRIPT="$RUN_SCRIPT"
+    elif [ -f "src/index.ts" ]; then
+      RUN_SCRIPT="index.ts"
+    elif [ -f "index.ts" ]; then
       RUN_SCRIPT="index.ts"
     elif [ -f "app.ts" ]; then
       RUN_SCRIPT="app.ts"
@@ -163,7 +167,7 @@ bun)
       RUN_SCRIPT="server.ts"
     fi
     bun install
-    bun dev $RUN_SCRIPT
+    bun dev ${START:-$START_SCRIPT}
     exit ${exitCode:-$?}
   else
     __exec_command "$@"
