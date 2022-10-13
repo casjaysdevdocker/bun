@@ -20,8 +20,8 @@ RUN set -ex; \
   unzip && \
   curl -fsSL https://bun.sh/install | bash && \
   ln -sf /usr/local/share/bun/bun /usr/local/bin && \
-  git clone -q "https://github.com/casjay-templates/bunjs" "/usr/local/share/template-files/data/htdocs/www" && \
-  cd "/usr/local/share/template-files/data/htdocs/www" && bun install
+  git clone "https://github.com/casjay-templates/bunjs" "/usr/local/share/template-files/data/htdocs/www/" && \
+  cd "/usr/local/share/template-files/data/htdocs/www" && /usr/local/bin/bun install
 
 COPY ./bin/. /usr/local/bin/
 COPY ./data/. /usr/local/share/template-files/data/
