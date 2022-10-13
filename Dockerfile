@@ -3,7 +3,7 @@ FROM casjaysdevdocker/debian:latest as build
 ARG TIMEZONE="America/New_York" \
   IMAGE_NAME="bun" \
   LICENSE="MIT" \
-  DEBUG="" \ 
+  DEBUG="" \
   PORTS="1-65535"
 
 ENV TZ="$TIMEZONE" \
@@ -11,7 +11,7 @@ ENV TZ="$TIMEZONE" \
   SHELL="/bin/bash" \
   ENV="$HOME/.bashrc" \
   TERM="xterm-256color" \
-  HOSTNAME="${HOSTNAME:-casjaysdev-$IMAGE_NAME}" \
+  HOSTNAME="${HOSTNAME:-casjaysdev-$IMAGE_NAME}"
 
 RUN set -ex; \
   mkdir -p "/usr/local/share/template-files/data/htdocs/www" && \
@@ -25,8 +25,7 @@ COPY ./bin/. /usr/local/bin/
 COPY ./data/. /usr/local/share/template-files/data/
 COPY ./config/. /usr/local/share/template-files/config/
 
-RUN  && \
-  rm -Rf /tmp/* /bin/.gitkeep /config /data /var/lib/apt/lists/* /usr/local/share/template-files/data/htdocs/www/.git
+RUN rm -Rf /tmp/* /bin/.gitkeep /config /data /var/lib/apt/lists/* /usr/local/share/template-files/data/htdocs/www/.git
 
 FROM scratch
 
