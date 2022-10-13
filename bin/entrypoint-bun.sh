@@ -122,7 +122,6 @@ fi
 mkdir -p "/data/htdocs/www" && cd "/data/htdocs/www" || exit 10
 if [ -z "$1" ] && [ -z "$(ls -A "/data/htdocs/www"/* 2>/dev/null)" ]; then
   cp -Rf "/usr/local/share/template-files/data/htdocs/www/." "/data/htdocs/www/"
-  RUN_SCRIPT="src/index.ts"
 fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Additional commands
@@ -167,7 +166,7 @@ bun)
       RUN_SCRIPT="server.ts"
     fi
     bun install
-    bun dev "${START:-$START_SCRIPT}"
+    bun dev ${RUN_SCRIPT:-$START_SCRIPT}
     exit ${exitCode:-$?}
   else
     __exec_command "$@"
