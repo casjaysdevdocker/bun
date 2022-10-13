@@ -154,8 +154,8 @@ bun)
 
 *) # Execute primary command
   if [ $# -eq 0 ]; then
-    if [ -n "$RUN_SCRIPT" ]; then
-      START_SCRIPT="$RUN_SCRIPT"
+    if [ -n "$START_SCRIPT" ]; then
+      RUN_SCRIPT="$START_SCRIPT"
     elif [ -f "src/index.ts" ]; then
       RUN_SCRIPT="index.ts"
     elif [ -f "index.ts" ]; then
@@ -168,7 +168,7 @@ bun)
     echo "Running bun install"
     bun install
     echo "Running bun dev ${RUN_SCRIPT:-$START_SCRIPT}"
-    bun dev ${RUN_SCRIPT:-$START_SCRIPT} || echo "Failed to run bun dev ${RUN_SCRIPT:-$START_SCRIPT}"
+    bun dev ${RUN_SCRIPT:-$START_SCRIPT} || { echo "Failed to run bun dev ${RUN_SCRIPT:-$START_SCRIPT}" && return 1; }
     exit ${exitCode:-$?}
   else
     __exec_command "$@"
