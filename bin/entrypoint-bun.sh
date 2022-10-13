@@ -165,8 +165,10 @@ bun)
     elif [ -f "server.ts" ]; then
       RUN_SCRIPT="server.ts"
     fi
+    echo "Running bun install"
     bun install
-    bun dev ${RUN_SCRIPT:-$START_SCRIPT}
+    echo "Running bun dev ${RUN_SCRIPT:-$START_SCRIPT}"
+    bun dev ${RUN_SCRIPT:-$START_SCRIPT} || echo "Failed to run bun dev ${RUN_SCRIPT:-$START_SCRIPT}"
     exit ${exitCode:-$?}
   else
     __exec_command "$@"
