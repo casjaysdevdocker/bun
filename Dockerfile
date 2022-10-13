@@ -11,7 +11,8 @@ ENV TZ="$TIMEZONE" \
   SHELL="/bin/bash" \
   ENV="$HOME/.bashrc" \
   TERM="xterm-256color" \
-  HOSTNAME="${HOSTNAME:-casjaysdev-$IMAGE_NAME}"
+  HOSTNAME="${HOSTNAME:-casjaysdev-$IMAGE_NAME}" \
+  PORT="3000"
 
 RUN set -ex; \
   mkdir -p "/usr/local/share/template-files/data/htdocs/www" && \
