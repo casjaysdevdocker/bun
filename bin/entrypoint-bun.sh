@@ -167,7 +167,7 @@ bun)
       RUN_SCRIPT="server.ts"
     fi
     bun install
-    bun dev ${START:-$START_SCRIPT}
+    bun dev "${START:-$START_SCRIPT}"
     exit ${exitCode:-$?}
   else
     __exec_command "$@"
