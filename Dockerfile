@@ -12,16 +12,18 @@ ENV TZ="$TIMEZONE" \
   ENV="$HOME/.bashrc" \
   TERM="xterm-256color" \
   HOSTNAME="${HOSTNAME:-casjaysdev-$IMAGE_NAME}" \
-  PORT="3000"
+  PORT="3000" \
+  BUN_INSTALL="/usr/local/share/bun"
 
 RUN set -ex; \
   mkdir -p "/usr/local/share/template-files/data/htdocs/www" && \
   apt-get update && apt-get upgrade -yy && apt-get install -yy \
   unzip && \
-  curl -fsSL https://bun.sh/install | bash && \
+  curl -q -fsSL https://bun.sh/install | bash && \
   ln -sf /usr/local/share/bun/bun /usr/local/bin && \
   git clone "https://github.com/casjay-templates/bunjs" "/usr/local/share/template-files/data/htdocs/www/" && \
-  cd "/usr/local/share/template-files/data/htdocs/www" && /usr/local/bin/bun install
+  cd "/usr/local/share/template-files/data/htdocs/www" && \
+  /usr/local/bin/bun install
 
 COPY ./bin/. /usr/local/bin/
 COPY ./data/. /usr/local/share/template-files/data/
