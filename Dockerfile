@@ -50,15 +50,15 @@ RUN echo 'Running cleanup' ; \
 
 FROM scratch
 
-ARG SERVICE_PORT="3000" 
-ARG EXPOSE_PORTS="1-65535" 
-ARG PHP_SERVER="bun" 
-ARG NODE_VERSION="system" 
-ARG NODE_MANAGER="system" 
-ARG BUILD_VERSION="latest" 
-ARG LICENSE="MIT" 
-ARG IMAGE_NAME="bun" 
-ARG BUILD_DATE="Thu Oct 20 03:47:13 PM EDT 2022" 
+ARG SERVICE_PORT="3000"
+ARG EXPOSE_PORTS="1-65535"
+ARG PHP_SERVER="bun"
+ARG NODE_VERSION="system"
+ARG NODE_MANAGER="system"
+ARG BUILD_VERSION="latest"
+ARG LICENSE="MIT"
+ARG IMAGE_NAME="bun"
+ARG BUILD_DATE="Thu Oct 20 03:47:13 PM EDT 2022"
 ARG TIMEZONE="America/New_York"
 
 LABEL maintainer="CasjaysDev <docker-admin@casjaysdev.com>" \
