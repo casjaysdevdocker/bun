@@ -19,8 +19,8 @@ dockermgr update bun
 ## Install and run container
   
 ```shell
-dockerHome="/var/lib/srv/$USER/docker/casjaysdevdocker/bun/bun/latest/rootfs"
-mkdir -p "/var/lib/srv/$USER/docker/bun/rootfs"
+dockerHome="/srv/$USER/docker/casjaysdevdocker/bun/bun/latest/rootfs"
+mkdir -p "/srv/$USER/docker/bun/rootfs"
 git clone "https://github.com/dockermgr/bun" "$HOME/.local/share/CasjaysDev/dockermgr/bun"
 cp -Rfva "$HOME/.local/share/CasjaysDev/dockermgr/bun/rootfs/." "$dockerHome/"
 docker run -d \
@@ -47,8 +47,8 @@ services:
       - TZ=America/New_York
       - HOSTNAME=bun
     volumes:
-      - "/var/lib/srv/$USER/docker/casjaysdevdocker/bun/bun/latest/rootfs/data:/data:z"
-      - "/var/lib/srv/$USER/docker/casjaysdevdocker/bun/bun/latest/rootfs/config:/config:z"
+      - "/srv/$USER/docker/casjaysdevdocker/bun/bun/latest/rootfs/data:/data:z"
+      - "/srv/$USER/docker/casjaysdevdocker/bun/bun/latest/rootfs/config:/config:z"
     ports:
       - 80:80
     restart: always
